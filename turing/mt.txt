@@ -1,0 +1,4 @@
+Considerando que o número inicial seja representado com ao menos um 0 à sua esquerda como por exemplo: 8 -> 01000 e que o cabeçote fixo inicie no último digíto à direita e a fita se mova podemos seguir a seguinte instrução:
+
+- Se o número lido for igual a 1, escrevemos 0 no seu lugar e movemos a fita para a direita.
+- Se o número for igual a 0, escrevemos 1 no seu lugar e finalizamos a operação.
