@@ -1,34 +1,38 @@
 #include<stdio.h>
-int mensagem[1000];
+int mensagem[10000];
 
 int main(){
-	char teclado[50];
-	int msg_size;	
+	char teclado[49];
+	int msg_size, counter = 0;	
 	
-	for(int i=0; i<49; i++){
-		
-		scanf("%c",&teclado[i]);	
+	while(counter < 49){
+		char temp;
+		scanf("%c",&temp);
+		if(temp != ' '){
+			teclado[counter] = temp;
+			counter++;
+		}
 	}
-	printf("Tamanho");
-	scanf("%i",&msg_size);
-	
-	for(int i=0;i<msg_size;i++){
-		scanf("%i", &mensagem[i]);
-	}	
-	
-	for(int i=0;i<msg_size;i++){
-		if(teclado[mensagem[i+1]] == '_'){
-			printf(" ");
-			continue;
-		}else if(teclado[mensagem[i+1]] == 'E'){
-			printf("\n");
-			continue;
-		}else{
-			printf("%c",teclado[mensagem[i+1]]);	
-		}			
-	}
-	
 
+	scanf("%i",&msg_size);	
+
+	for(int i = 0; i < msg_size; i++){
+		int temp;		
+		if(scanf("%i",&temp)){
+			mensagem[i] = temp;
+		}
+	}
+
+	for(int i=0;i<msg_size;i++){	
+
+		if(teclado[mensagem[i]] == '_'){
+			printf(" ");
+		}else if(teclado[mensagem[i]] == 'E'){
+			printf("\n");
+		}else{
+			printf("%c",teclado[mensagem[i]]);	
+		}
+	}
 	
 	return 0;
 }
