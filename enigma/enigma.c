@@ -19,16 +19,20 @@ int main(){
     }
 
     scanf("%*[^\r\n]s");
-
+    // descarta primeiro \n 
+    scanf("%c",&caractere);
     while(scanf("%c", &caractere) != EOF ){
         // letras minúsculas
         if(caractere >= 97 && caractere <= 122){            
             caractere = caractere - 97;
-            caractere = rotor3[rotor2[rotor1[(int)caractere]]];
-        }
-        if(caractere >= 65 && caractere <= 90){            
+            caractere = rotor3[rotor2[rotor1[(int)caractere]]] + 97;
+        }else if(caractere >= 65 && caractere <= 90){            
             caractere = caractere - 65;
-            caractere = rotor3[rotor2[rotor1[(int)caractere]]];            
+            caractere = rotor3[rotor2[rotor1[(int)caractere]]] + 65;            
+        }else{
+            // não gira o rotor caso não seja letra
+            printf("%c", caractere);
+            continue;
         }
         printf("%c", caractere);
         //gira o rotor
@@ -42,16 +46,17 @@ int main(){
         contador1++;
 
         //gira outros rotores
-        if(contador1 == 25){
+        if(contador1 == 26){
             finalRotor = rotor2[25];
             rotor2[25] = rotor2[0];
             for(int i =0;i < 24;i++){
                 rotor2[i] = rotor2[i+1];
             }
             rotor2[24] = finalRotor;
-            contador2++;        
+            contador2++;
+            contador1 = 0;
         }
-        if(contador2 == 25){
+        if(contador2 == 26){
             finalRotor = rotor3[25];
             rotor3[25] = rotor3[0];
             for(int i =0;i < 24;i++){
@@ -59,6 +64,7 @@ int main(){
             }
             rotor3[24] = finalRotor;             
             contador3++;
+            contador2 =0;
         }        
     }
     
