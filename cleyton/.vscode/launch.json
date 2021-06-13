@@ -9,7 +9,7 @@
       "stopAtEntry": false,
       "cwd": "/home/lusca/Área de Trabalho/icc/Codigos021-1/cleyton",
       "environment": [],
-      "program": "/home/lusca/Área de Trabalho/icc/Codigos021-1/cleyton/build/Debug/outDebug",
+      "program": "/home/lusca/Área de Trabalho/icc/Codigos021-1/cleyton/punk",
       "internalConsoleOptions": "openOnSessionStart",
       "MIMode": "gdb",
       "miDebuggerPath": "/usr/bin/gdb",

@@ -26,12 +26,14 @@ void MUL(int indiceOperacao){
     add2 = fita[indiceOperacao + 2];
     dest = fita[indiceOperacao + 3];
     fita[dest] = fita[add1] * fita[add2];
+    return;
 }
 void CLT(int indiceOperacao){
     add1 = fita[indiceOperacao + 1];
     add2 = fita[indiceOperacao + 2];
     dest = fita[indiceOperacao + 3];
     fita[dest] = (fita[add1] < fita[add2]);
+    return;
 }
 void CEQ(int indiceOperacao){
     add1 = fita[indiceOperacao + 1];
@@ -41,14 +43,12 @@ void CEQ(int indiceOperacao){
     return;
 }
 int  JMP(int indiceOperacao){
-    add1 = fita[indiceOperacao + 1];
-    dest = fita[add1];
-    return fita[dest];
+    add1 = fita[indiceOperacao + 1];    
+    return fita[add1];
 }
 int  JEQ(int indiceOperacao){
     add1 = fita[indiceOperacao + 1];
     add2 = fita[indiceOperacao + 2];
-    add2 = fita[add2];
     return (fita[add1] != 0)?(fita[add2]):(indiceOperacao + 3);
 }
 void CPY(int indiceOperacao){
@@ -72,34 +72,34 @@ int main(){
     for(int i=0; i<512; i++){        
         scanf("%i", &fita[i]);        
     }
-    int opAtual=0;
+    int indiceOpAtual=0;
     printf("Saida do programa:\n");
-    while(fita[opAtual]!= 0){        
-        switch(fita[opAtual]){
-            case 1: ADD(fita[opAtual]);
-                opAtual += 4;
+    while(fita[indiceOpAtual]!= 0){        
+        switch(fita[indiceOpAtual]){
+            case 1: ADD(indiceOpAtual);
+                indiceOpAtual += 4;
                 break;
-            case 2: MUL(fita[opAtual]);
-                opAtual += 4;
+            case 2: MUL(indiceOpAtual);
+                indiceOpAtual += 4;
                 break;
-            case 3: CLT(fita[opAtual]);
-                opAtual += 4;
+            case 3: CLT(indiceOpAtual);
+                indiceOpAtual += 4;
                 break;
-            case 4: CEQ(fita[opAtual]);
-                opAtual += 4;
+            case 4: CEQ(indiceOpAtual);
+                indiceOpAtual += 4;
                 break;
-            case 5: opAtual = JMP(fita[opAtual]);
+            case 5: indiceOpAtual = JMP(indiceOpAtual);
                 break;
-            case 6: opAtual = JEQ(fita[opAtual]);
+            case 6: indiceOpAtual = JEQ(indiceOpAtual);
                 break;
-            case 7: CPY(fita[opAtual]);
-                opAtual += 3;
+            case 7: CPY(indiceOpAtual);
+                indiceOpAtual += 3;
                 break;
-            case 8: PUT(fita[opAtual]);
-                opAtual += 2;
+            case 8: PUT(indiceOpAtual);
+                indiceOpAtual += 2;
                 break;
-            case 9: PTN(fita[opAtual]);
-                opAtual += 2;
+            case 9: PTN(indiceOpAtual);
+                indiceOpAtual += 2;
                 break;
         }
     }
