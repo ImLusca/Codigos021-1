@@ -40,11 +40,6 @@ int main(){
             return 0;
         }
     }
-    
-
-
     printf("Inbox\n");
-
-
     return 0;
 }

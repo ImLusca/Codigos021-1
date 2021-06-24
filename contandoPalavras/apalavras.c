@@ -1,6 +1,6 @@
 #include<stdio.h>
 
-int VerificaSeEValido(char caractere){
+int CaracterePalavra(char caractere){
     // int maiuscula = (caractere >= 65 && caractere <= 90);
     // int minuscula = (caractere >= 97 && caractere<= 122);
     // return (maiuscula || minuscula);
@@ -18,36 +18,20 @@ int VerificaSeEValido(char caractere){
 
 
 int main(){
-    int ContPalavras=0, ContCaracteres=0,ContLinhas=0;
-    char caractereLido, CharInicioPalavra=' ';
+    int ContPalavras=0, ContCaracteres=0,ContLinhas=0, Epalavra=0;
+    char caractereLido;
     while((caractereLido=getchar()) != EOF){
-        MeSintoVelho:
+
         ContCaracteres++;
-        //marca o início de uma palavra
-        if(CharInicioPalavra == ' ' && VerificaSeEValido(caractereLido)){
-            CharInicioPalavra = caractereLido;
-        }
-
-        //pega o final da palavra e conta
-        if(CharInicioPalavra != ' ' && !VerificaSeEValido(caractereLido)){
-            ContPalavras++;
-            CharInicioPalavra = ' ';
-        }
-
+        
         if(caractereLido == '\n'){
             ContLinhas++;
         }
-        if(caractereLido == '\r'){
-            caractereLido = getchar();            
-            ContLinhas++;
-            // caso seja \r\n conta só um caractere e finaliza a palavra
-            if(caractereLido == '\n'){   
-                ContCaracteres++;             
-                continue;
-            }
-            //caso seja \r'algum outro char' finaliza a linha e incializa uma nova palavra
-            printf("Velho\n");
-            goto MeSintoVelho;                        
+        if(!CaracterePalavra(caractereLido)){
+            Epalavra = 0;
+        }else if(!Epalavra){
+            ContPalavras++;
+            Epalavra = 1;
         }
 
     }
