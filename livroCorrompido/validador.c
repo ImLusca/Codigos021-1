@@ -5,7 +5,7 @@
 
 
 char *readline(){
-    int bloco = 100, contBlocos=1, espacoVazio;    
+    int bloco = 100, contBlocos=1;    
     char* linha = (char*)malloc(bloco * sizeof(char));
     char* aux = linha;
     char caractere;
@@ -17,26 +17,25 @@ char *readline(){
         //bloco for preechido, o sistema aumenta o seu tamanho em mais 100.
         if(bloco == 0){            
             bloco = 100;
-            linha = (char*)realloc(linha,bloco * ++contBlocos * sizeof(char));
-        }else{
-            linha++;
-            *linha = caractere;
-            bloco--;
+            aux = realloc(aux, bloco * ++contBlocos * sizeof(char));
         }
+        *linha = caractere;
+        linha++;
+        bloco--;
+        
     }while(caractere != '\0');
 
     //Remove o Espaço extra do bloco
-    espacoVazio = abs(bloco - 100);    
-    linha = (char*)realloc(linha, (100*contBlocos) - espacoVazio);
+    aux = (char*)realloc(aux, (100*contBlocos) - bloco);
 
     return aux;
 }
 
 int main(){
     int numLinhas,NaoCorrompidas,indice;
-    scanf("%i",&numLinhas);    
-
-    char **MatrizLinhas = malloc(numLinhas * sizeof(char*));
+    scanf("%i\n",&numLinhas);            
+    char **MatrizLinhas = NULL;
+    MatrizLinhas = malloc(numLinhas * sizeof(char*));
     
     for(int i =0;i<numLinhas;i++){
         MatrizLinhas[i] = readline();
@@ -46,7 +45,7 @@ int main(){
     scanf("%i",&NaoCorrompidas);
     for(int i = 0;i<NaoCorrompidas;i++){
         scanf("%i",&indice);
-        printf("%s", MatrizLinhas[indice]);
+        printf("%s\n", MatrizLinhas[indice]);
     }
     //Desalocando a memória
     for(int i =0;i < numLinhas; i++){
