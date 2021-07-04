@@ -7,11 +7,11 @@ typedef struct musica{
     char* nomeMusica;
     char* artista;
     int tocando;
-    unsigned short duracao;
+    int duracao;
 } Musica;
 typedef struct playlist{
     char* nomePlaylist;
-    short ContMusicas;
+    int ContMusicas;
     Musica* listaMusicas;
 } Playlist;
 
@@ -29,7 +29,8 @@ int main(){
 
     PlaylistUser.nomePlaylist = readline();
     PlaylistUser.ContMusicas = 0;
-
+    PlaylistUser.listaMusicas = malloc(sizeof(Musica)*15);
+    
     do{
         scanf("%i",&comando);     
         fflush(stdin);
@@ -65,6 +66,11 @@ char *readline(){
     char* aux = linha;
     char caractere;
     
+    while((caractere = getchar()) == '\n');
+    if(caractere != EOF){
+        ungetc(caractere,stdin);
+    }
+    
     do{
         caractere = getchar();
         caractere = (caractere == '\n') ?('\0'):(caractere);
@@ -82,23 +88,27 @@ char *readline(){
 }
 
 void AddMusica(Playlist* playlistAtual){
-    int numMusicas = playlistAtual->ContMusicas++;
+    
+    if(playlistAtual->ContMusicas == 15){
+        printf("Playlist cheia!\n");
+        return;
+    }
+
+
+    int numMusicas = ++playlistAtual->ContMusicas;    
     struct musica novaMusica;
 
     //Cria uma nova instância de musica para atribuir à playlist depois
     novaMusica.nomeMusica = readline();
     novaMusica.artista = readline();
-    scanf("%hn", &novaMusica.duracao);
+    scanf("%i", &novaMusica.duracao);
     //Se for a primeira música, marca como tocando
     novaMusica.tocando = (numMusicas == 1);
 
     //Passando a instância que criamos para a struct da playlist
-    playlistAtual->listaMusicas = realloc(playlistAtual->listaMusicas,
-    sizeof(Musica) * numMusicas);
-
     playlistAtual->listaMusicas[numMusicas -1] = novaMusica;
 
-    printf("Musica %s de %s adicionada com sucesso.",
+    printf("Musica %s de %s adicionada com sucesso.\n",
     novaMusica.nomeMusica,novaMusica.artista);
 
     return;
@@ -106,19 +116,20 @@ void AddMusica(Playlist* playlistAtual){
 
 void ExibePlaylist(Playlist playlistAtual){
     printf("---- Playlist: %s ----\n",playlistAtual.nomePlaylist);
-    printf("Total de musicas: %hn\n",&playlistAtual.ContMusicas);
+    printf("Total de musicas: %i\n\n",playlistAtual.ContMusicas);
 
     for(int i=0;i < playlistAtual.ContMusicas; i++){
-        printf("\n");
         struct musica musicaAtual = playlistAtual.listaMusicas[i];
 
         if(musicaAtual.tocando == 1 ){
-            printf("=== NOW PLAYING ===");
+            printf("=== NOW PLAYING ===\n");
         }
 
-        printf("(%i). '%s'\n",i,musicaAtual.nomeMusica);
+        printf("(%i). '%s'\n",i+1,musicaAtual.nomeMusica);
         printf("Artista: %s\n",musicaAtual.artista);
-        printf("Dureacao: %hn segundos\n",&musicaAtual.duracao);
+        printf("Duracao: %i segundos\n",musicaAtual.duracao);
+        printf("\n");
+
     }
     return;
 }
@@ -126,6 +137,7 @@ void ExibePlaylist(Playlist playlistAtual){
 void ProxMusica(Playlist* playlistAtual){
     for(int i =0;i < playlistAtual->ContMusicas;i++){
         if(playlistAtual->listaMusicas[i].tocando){
+            playlistAtual->listaMusicas[i].tocando = 0;
             playlistAtual->listaMusicas[i+1].tocando = 1;
             break;
         }
@@ -136,6 +148,7 @@ void ProxMusica(Playlist* playlistAtual){
 void VoltaMusica(Playlist* playlistAtual){
     for(int i =0;i < playlistAtual->ContMusicas;i++){
         if(playlistAtual->listaMusicas[i].tocando){
+            playlistAtual->listaMusicas[i].tocando = 0;
             playlistAtual->listaMusicas[i-1].tocando = 1;
             break;
         }
