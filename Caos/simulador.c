@@ -12,8 +12,8 @@ typedef struct matrizes
     char **matrizCop;
 } Matrizes;
 
-char modeloNeuman(Matrizes dadosMat,int coordX,int coordY);
-char modeloMoore(Matrizes dadosMat,int coordX,int coordY);
+void modeloNeuman(Matrizes dadosMat,int coordX,int coordY);
+void modeloMoore(Matrizes dadosMat,int coordX,int coordY);
 void sincronizaMatrizes(Matrizes dadosMat);
 
 int main(){
@@ -27,7 +27,10 @@ int main(){
         printf("Dados de entrada apresentam erro.\n");
         return 0;
     }
-
+    if(vizinhanca != 'N' && vizinhanca != 'M'){
+        printf("Dados de entrada apresentam erro.\n");
+        return 0;
+    }
     // Alocando as Matrizes
     mat = malloc(sizeof(char*)*linhas);
     matCopia = malloc(sizeof(char*)*linhas);
@@ -35,14 +38,15 @@ int main(){
         mat[i] = malloc(sizeof(char)*colunas);
         matCopia[i] = malloc(sizeof(char)*colunas);
     }
+
     //Lendo matriz entrada
-    for(int i =0; i< linhas;i++){
-        for(int j=0;j<colunas;j++){
+    for(int i =0; i<linhas; i++){
+        for(int j=0; j<colunas; j++){
             char tempchar;
-            //ignora os \n
-            while((tempchar = getchar()) == '\n');
-            if(tempchar != EOF){
-                ungetc(tempchar,stdin);
+            tempchar = getchar();
+
+            if(tempchar == '\n'){
+                tempchar = getchar();
             }
 
             mat[i][j] = tempchar;
@@ -56,7 +60,6 @@ int main(){
     dadosMatriz.matriz = mat;
     dadosMatriz.matrizCop = matCopia;
 
-
     while (contador < geracoes)
     {
         if(vizinhanca == 'N'){    
@@ -69,17 +72,18 @@ int main(){
         else{
             for(int i =0;i< dadosMatriz.rows;i++){
                 for(int j=0;j< dadosMatriz.cols; j++){
-                    dadosMatriz.matrizCop[i][j] = modeloMoore(dadosMatriz,i,j);
+                    modeloMoore(dadosMatriz,i,j);
                 }
             }
         }
+        
         sincronizaMatrizes(dadosMatriz);
         contador++;
     }    
 
     //printando o resutado final
     for(int i = 0; i < dadosMatriz.rows ;i++){
-        for(int j=0;j < dadosMatriz.cols; j++){
+        for(int j=0;j < dadosMatriz.cols;j++){
             printf("%c",dadosMatriz.matriz[i][j]);
         }
         printf("\n");
@@ -98,7 +102,7 @@ int main(){
     return 0;
 }
 
-char modeloNeuman(Matrizes dadosMat,int coordX,int coordY){
+void modeloNeuman(Matrizes dadosMat,int coordX,int coordY){
     int contadorCelulas = 0;
 
     for(int i = coordX - 2; i < coordX+3;i++){
@@ -127,34 +131,31 @@ char modeloNeuman(Matrizes dadosMat,int coordX,int coordY){
 
     if(dadosMat.matriz[coordX][coordY] == 'x'){
         if(contadorCelulas < 2 ){
-            return '.';
+            dadosMat.matrizCop[coordX][coordY] = '.';
         }else if(contadorCelulas > 3){
-            return '.';            
-        }else{
-            return 'x';            
-
+            dadosMat.matrizCop[coordX][coordY] = '.';            
         }
     }else{
         if(contadorCelulas == 3){
-            return 'x';            
+            dadosMat.matrizCop[coordX][coordY] = 'x';            
         }
     }
 }
 
-char modeloMoore(Matrizes dadosMat,int coordX,int coordY){
+void modeloMoore(Matrizes dadosMat,int coordX,int coordY){
     int contadorCelulas = 0;
 
     for(int i = coordX - 1; i<coordX+2;i++){
         //passa pra cima ou baixo caso chegue na borda da matriz      
         int tempI = i;  
-        if(i < 0 ) {tempI += dadosMat.rows; }
-        if(i > dadosMat.rows ) {tempI -= dadosMat.rows;}
+        if(i < 0 ) tempI += dadosMat.rows; 
+        if(i >= dadosMat.rows ) tempI -= dadosMat.rows;
 
         for(int j = coordY -1; j< coordY+2;j++){
             //passa pra esquerda ou direita caso chegue na borda da matriz        
             int tempJ = j;
-            if(j < 0 ) {tempJ += dadosMat.cols; }
-            if(j > dadosMat.cols) {tempJ -= dadosMat.cols;}
+            if(j < 0 ) {tempJ += dadosMat.cols;}
+            if(j >= dadosMat.cols) {tempJ -= dadosMat.cols;}
 
             //Não conta a própria célula
             if(i == coordX && j == coordY){continue;}
@@ -181,9 +182,6 @@ void sincronizaMatrizes(Matrizes dadosMat){
     //Iguala a Matriz original com a cópia
     for(int i = 0; i < dadosMat.rows ;i++){
         for(int j=0;j < dadosMat.cols; j++){
-            if(dadosMat.matrizCop[i][j] == 'x'){
-                int a = 1;
-            }
             dadosMat.matriz[i][j] = dadosMat.matrizCop[i][j];
         }
     }
