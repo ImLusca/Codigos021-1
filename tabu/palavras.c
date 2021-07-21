@@ -20,23 +20,36 @@ char *readline(char *Tabu,int *contador){
         caractere = getchar();
         caractere = (caractere == '$') ?('\0'):(caractere);
 
-        //Se alguma letra for igual à primeira letra do Tabu, verifica
+        //se caracter for igual a primeira letra da palavra tabu,
+        //Compara o restante
         if(caractere == Tabu[0]){
-            int numLetrasTabu = strlen(Tabu);
-            *contador += 1;
-            for(int i=1; i< numLetrasTabu; i++){
+            *contador+=1;
+            for(int i =1;i < (int)strlen(Tabu);i++){
                 caractere = getchar();
-                //Verifica se algum caractere difere
+                //Se o restante não for igual, adiciona a 
+                //linha oque foi lido até então
                 if(caractere != Tabu[i]){
-                    //Devolve palavra pra stream
-                    for(int j=i; j >= 0;j--){
-                        ungetc(Tabu[j],stdin);
+                    for(int j = 0; j < i ;j++){
+                        if(bloco == 0){bloco = 100;
+                            aux = realloc(aux, bloco * ++contBlocos * sizeof(char));
+                        }
+                        *linha = Tabu[j];                        
+                        linha++;
+                        bloco--;
                     }
-                        ungetc(caractere,stdin);
-                    contador -=1;
+
+                    if(bloco == 0){bloco = 100;
+                        aux = realloc(aux, bloco * ++contBlocos * sizeof(char));
+                    }
+                    *linha= caractere;
+                    linha++;
+                    bloco--;
+
+                    *contador-=1;
                     break;
                 }
             }
+            continue;
         }
 
         if(bloco == 0){            
