@@ -1,13 +1,16 @@
 //nome:Lucas Pereira Pacheco nºusp:12543930
 //Adicionando Sobrenomes
 #include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
 
-char *readline(int *FimLeitura, char* ultimoSobrenome){    
+
+char *readline(int *fimLeitura, char** ultimoSobrenome,int sobrenomeImpar){    
     int bloco = 100, contBlocos=1;    
-    char* linha = (char*)malloc(bloco * sizeof(char));
-    char* aux = linha;
+    char *linha = (char*)malloc(bloco * sizeof(char));
+    char *aux = linha, *sobrenomeAtual = linha;
     char caractere;
-    ultimoSobrenome = linha;
+    
 
     while((caractere = getchar()) == '\n');
     if(caractere != EOF){
@@ -18,20 +21,21 @@ char *readline(int *FimLeitura, char* ultimoSobrenome){
         caractere = getchar();
         caractere = (caractere == '\n') ?('\0'):(caractere);
         if(caractere == 36){
-            *FimLeitura = 1;
+            *fimLeitura = 1;
             caractere = '\0';
         }
 
 
-        if(ultimoSobrenome == NULL){
+        if(sobrenomeAtual == NULL && !sobrenomeImpar){
             //Como foi zerado no último loop, assume o endereço
             //do primeiro char do próximo sobrenome
-            //(Pode dar problema se a pessoa colocar dois espaços rs) 
-            ultimoSobrenome = linha + 1;
+            sobrenomeAtual = linha ;
         }
 
-        if(caractere == ' '){
-            ultimoSobrenome = NULL;
+        if(caractere == ' '&& !sobrenomeImpar){
+            //O espaço indica a existência de um sobrenome posterior ao
+            //atual, então zeramos o ponteiro, pois o sobrenome atual não nos interessa salvar
+            sobrenomeAtual = NULL;
         }
 
         if(bloco == 0){            
@@ -44,26 +48,59 @@ char *readline(int *FimLeitura, char* ultimoSobrenome){
 
     aux = (char*)realloc(aux, (100*contBlocos) - bloco);
 
+    if(sobrenomeImpar){
+        return aux;
+    }
+
+    //Passa último sobrenome pro ponteiro
+    int numLetrasSobrenome = strlen(sobrenomeAtual);    
+
+    ultimoSobrenome[0] = malloc(numLetrasSobrenome + 1);
+
+    for(int i=0;i < numLetrasSobrenome; i++){
+        ultimoSobrenome[0][i] = sobrenomeAtual[i];
+    }    
+    ultimoSobrenome[0][numLetrasSobrenome] = '\0';
+
     return aux;
 }
 
 
-void addSobrenome(char *nome,char *ultimoSobrenome){
+char *addSobrenome(char *nome,char *ultimoSobrenome){
+    int nLetrasSobrenome= strlen(ultimoSobrenome);
+    int nLetrasNome = strlen(nome);
 
+    nome = realloc(nome,nLetrasNome + nLetrasSobrenome + 1);
     
+    //trocando '\0' por espaço
+    nome[nLetrasNome] = ' ';   
 
+    //adicionando sobrenome ao nome
+    for(int i = 1;i <= (int)strlen(ultimoSobrenome); i++){        
+        nome[nLetrasNome + i] = ultimoSobrenome[i - 1];
+    }
+
+    nome[nLetrasNome + nLetrasSobrenome +1] = '\0';
+
+    return nome;
 }
 
 
 int main(){
-    char *nome, *ultimoSobrenome;
+    char *nome, *ultimoSobrenome=NULL;
     int FimLeitura =0, contaSobrenomes=0;
 
-    while(!FimLeitura){
-        *nome = readline(&FimLeitura, ultimoSobrenome);
+    while(!FimLeitura){        
+        nome = readline(&FimLeitura, &ultimoSobrenome, contaSobrenomes%2);
+        if(contaSobrenomes % 2 ){
+            nome = addSobrenome(nome,ultimoSobrenome);
+            free(ultimoSobrenome);
+        }
 
         printf("%s\n", nome);
 
+        contaSobrenomes++;
+        free(nome);
     }
 
 
