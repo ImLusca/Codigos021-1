@@ -1,0 +1,19 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "cppdbg",
+      "request": "launch",
+      "args": ["<", "teste/1.in"],
+      "stopAtEntry": false,
+      "cwd": "/home/lusca/Área de Trabalho/icc/Codigos021-1/PolonesaReversa",
+      "environment": [],
+      "program": "/home/lusca/Área de Trabalho/icc/Codigos021-1/PolonesaReversa/calculadora",
+      "internalConsoleOptions": "openOnSessionStart",
+      "MIMode": "gdb",
+      "miDebuggerPath": "/usr/bin/gdb",
+      "externalConsole": false
+    }
+  ]
+}
