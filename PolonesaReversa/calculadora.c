@@ -6,14 +6,16 @@
 struct stack{
     double *numeros;
     int indiceTopo;
+    int tamanhoPilha;
 };
 
 struct stack Pilha;
 
 
 void stackPush(double numero){
-    if((Pilha.indiceTopo % 50) == 1 && Pilha.indiceTopo != 1){
-        Pilha.numeros = realloc(Pilha.numeros, sizeof(double) * (Pilha.indiceTopo + 50));
+    if(Pilha.indiceTopo == Pilha.tamanhoPilha){
+        Pilha.tamanhoPilha += 20;        
+        Pilha.numeros = realloc(Pilha.numeros, sizeof(double) * (Pilha.tamanhoPilha));
     }
 
     Pilha.numeros[Pilha.indiceTopo] = numero;
@@ -56,11 +58,12 @@ int main(){
 
     Pilha.indiceTopo = 0;
     Pilha.numeros = malloc(sizeof(double)*50);
+    Pilha.tamanhoPilha = 50;
 
     do{
         caractere = getchar();
 
-        if(caractere == 32){
+        if(caractere == 32 || caractere == EOF){
             continue;
         }
 
@@ -75,6 +78,7 @@ int main(){
         fazOperacao(caractere);    
 
     }while(caractere != EOF);
+    
 
     printf("Resultado: %.6lf\n",Pilha.numeros[0]);
 

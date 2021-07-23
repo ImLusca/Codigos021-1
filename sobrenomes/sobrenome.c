@@ -6,7 +6,7 @@
 
 
 char *readline(int *fimLeitura, char** ultimoSobrenome,int sobrenomeImpar){    
-    int bloco = 100, contBlocos=1;    
+    int bloco = 250, contBlocos=1;    
     char *linha = (char*)malloc(bloco * sizeof(char));
     char *aux = linha, *sobrenomeAtual = linha;
     char caractere;
@@ -39,14 +39,14 @@ char *readline(int *fimLeitura, char** ultimoSobrenome,int sobrenomeImpar){
         }
 
         if(bloco == 0){            
-            bloco = 100;
+            bloco = 250;
             aux = realloc(aux, bloco * ++contBlocos * sizeof(char));
         }
         *linha = caractere;
         linha++; bloco--;        
     }while(caractere != '\0');
 
-    aux = (char*)realloc(aux, (100*contBlocos) - bloco);
+    aux = (char*)realloc(aux, (250*contBlocos) - bloco);
 
     if(sobrenomeImpar){
         return aux;
