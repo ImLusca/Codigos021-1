@@ -24,50 +24,49 @@ float **alocaMatriz(int numTipos){
     return matrizMultiplicadores;
 }
 
-int leAtaques(int **ataquesPossiveis){
+Ataques *leAtaques(int *TotalAtaques){
     int numAtaques=20, contAtaques=0,poderAtaque, tipoAtacante;
-    *ataquesPossiveis = malloc(sizeof(float) * numAtaques);
+    Ataques *ataquesPossiveis;
+    ataquesPossiveis = malloc(sizeof(float) * numAtaques);
 
     do{
         scanf("%i",&poderAtaque);
-        scanf("%i",&tipoAtacante);
-
         if(poderAtaque == -1){
             continue;
         }
 
+        scanf("%i",&tipoAtacante);
+
         if(contAtaques == numAtaques){
             numAtaques += 20;
-            *ataquesPossiveis = realloc(sizeof(float)* numAtaques);
+            ataquesPossiveis = realloc(ataquesPossiveis,sizeof(float)* numAtaques);
         }
 
-        *ataquesPossiveis[contAtaques].poderAtaque = poderAtaque;
-        *ataquesPossiveis[contAtaques].indiceTipo = tipoAtacante;
+        ataquesPossiveis[contAtaques].poderAtaque  = poderAtaque;
+        ataquesPossiveis[contAtaques].indiceTipo = tipoAtacante;
 
         contAtaques++;
 
-    }(while poderAtaque != -1)
+    }while (poderAtaque != -1);
 
-    *ataquesPossiveis = realloc(sizeof(float) * contAtaques);
-
-    return contAtaques;
+    *TotalAtaques = contAtaques;
+    return ataquesPossiveis;
 }
 
 int main(){
-    int numTipos, numAtaques, tipoOponente, maiorDano=0;
-    float **matrizMultiplicadores;
-    Ataques *ataquesPossiveis, *ataqueMaisEfetivo;
+    int numTipos, numAtaques, tipoOponente;
+    float **matrizMultiplicadores, maiorDano=0;
+    Ataques *ataquesPossiveis, ataqueMaisEfetivo;
 
     scanf("%i",&numTipos);
     matrizMultiplicadores = alocaMatriz(numTipos);
 
-    numAtaques = leAtaques(&ataquesPossiveis);
-
+    ataquesPossiveis = leAtaques(&numAtaques);
     
     scanf("%i",&tipoOponente);
 
     for(int i=0; i< numAtaques; i++){
-        float multiplicadorDano = matrizMultiplicadores[ataquesPossiveis->indiceTipo][tipoOponente];
+        float multiplicadorDano = matrizMultiplicadores[ataquesPossiveis[i].indiceTipo][tipoOponente];
         int danoCausado = ataquesPossiveis[i].poderAtaque * multiplicadorDano;
 
         if(danoCausado > maiorDano){
@@ -76,9 +75,14 @@ int main(){
         }
     }
 
-    printf("O melhor ataque possui indice %i e dano %.2f",ataqueMaisEfetivo->indiceTipo,maiorDano);
+    printf("O melhor ataque possui indice %i e dano %.2f\n",ataqueMaisEfetivo.indiceTipo ,maiorDano);
 
-    //Liberar memória dps
+    for(int i =0; i < numTipos;i++){
+        free(matrizMultiplicadores[i]);
+    }
+    free(matrizMultiplicadores);
+    free(ataquesPossiveis);
+
 
     return 0;
 }
