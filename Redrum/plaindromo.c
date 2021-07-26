@@ -50,8 +50,8 @@ int VerificaPalindromo(structPalavras *Palavras,int indice){
 
     int totCaracteres = Palavras->qtdCaracteres;
 
-    //Se o indice for igual a quantidade de caracteres
-    //significa que todos caracteres das duas strings são iguais
+    //Se chegar até o indice igual a metade da quantidade de caracteres
+    //significa que a string é um palindromo
     if(indice == (Palavras->qtdCaracteres / 2) + 1){
         return 1;
     }
@@ -71,7 +71,6 @@ void LimpaString(structPalavras* Palavras){
     for(int i =0;i < Palavras->qtdCaracteres; i++){
         caractere = Palavras->stringEntrada[i];
 
-        //Remove espacos e barras 
         if(isalnum(caractere)){
             tempStr[indiceCaractere] = caractere;
             indiceCaractere++;
@@ -98,7 +97,9 @@ int main(){
         free(Palavras.stringEntrada);        
         return 0;
     }
-
+    
+    //Remove espacos e barras para
+    //verificar palindromo indireto
     LimpaString(&Palavras);
     
     if(VerificaPalindromo(&Palavras,0)){
