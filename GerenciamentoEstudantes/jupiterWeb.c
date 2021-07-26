@@ -2,15 +2,22 @@
 //Gerenciamento de estudantes
 #include<stdio.h>
 #include<stdlib.h>
+#include<string.h>
 
 typedef struct aluno
 {
-    int nUsp;
+    long int nUsp;
     char *Nome;
     char *Curso;
     int idade;
-
 } Aluno;
+
+typedef struct jupiterWeb
+{
+  Aluno *listaAlunos;
+  int contAlunos;  
+}JupiterWeb;
+
 
 char *Readline(){
     int tamanhoString=20, contaCaracteres=0;
@@ -44,7 +51,7 @@ char *Readline(){
     return linha;
 }
 
-Aluno *ListaAlunos(){
+void AlimentaBanco(JupiterWeb* bancoDeAlunos){
     Aluno *listaAlunos;
     listaAlunos = malloc(sizeof(Aluno) * 30);
     int contAlunos = 0,idade;    
@@ -53,7 +60,7 @@ Aluno *ListaAlunos(){
         scanf("%li", &nUsp);
 
         if(nUsp == -1){
-            break;
+            continue;
         }
 
         listaAlunos[contAlunos].nUsp  = nUsp;
@@ -68,13 +75,85 @@ Aluno *ListaAlunos(){
 
     listaAlunos = realloc(listaAlunos, sizeof(Aluno) * contAlunos);
 
-    return listaAlunos;
+    bancoDeAlunos->listaAlunos = listaAlunos;
+    bancoDeAlunos->contAlunos = contAlunos;
+
+}
+
+void PrintaAluno(Aluno dadosAluno){
+    printf("Nome: %s\n", dadosAluno.Nome);
+    printf("Curso: %s\n", dadosAluno.Curso);
+    printf("N USP: %li\n", dadosAluno.nUsp);
+    printf("IDADE: %i\n", dadosAluno.idade);
+    printf("\n");
+}
+
+void BuscaPorNusp(JupiterWeb *bancoDeAlunos){
+    long int nUsp;
+    scanf("%li",&nUsp);
+
+    for(int i =0; i< bancoDeAlunos->contAlunos; i++){
+
+        if(bancoDeAlunos->listaAlunos[i].nUsp == nUsp){
+            PrintaAluno(bancoDeAlunos->listaAlunos[i]);
+        }
+
+    }
+
+}
+
+void BuscaPorCurso(JupiterWeb *bancoDeAlunos){
+    char *curso = Readline();
+    for(int i =0; i< bancoDeAlunos->contAlunos; i++){         
+        
+        if(!strcmp(bancoDeAlunos->listaAlunos[i].Curso,curso)){
+            PrintaAluno(bancoDeAlunos->listaAlunos[i]);
+        }
+
+    }
+
+    free(curso);
+
+}
+
+void ListaTodosAlunos(JupiterWeb *bancoDeAlunos){
+
+    for(int i =0; i< bancoDeAlunos->contAlunos; i++){
+
+        PrintaAluno(bancoDeAlunos->listaAlunos[i]);
+
+    }
+}
+
+void LiberaMemoria(JupiterWeb *bancoDeAlunos){
+
+    for(int i =0;i< bancoDeAlunos->contAlunos;i++){
+        free(bancoDeAlunos->listaAlunos[i].Nome);
+        free(bancoDeAlunos->listaAlunos[i].Curso);
+    }
 }
 
 int main(){
-    Aluno *listaDeAlunos;
-    listaDeAlunos = ListaAlunos();
+    JupiterWeb bancoDeAlunos;
+    AlimentaBanco(&bancoDeAlunos);
+    int entrada;
 
+    do{
+        scanf("%i", &entrada);
+
+        switch (entrada)
+        {
+        case 1:BuscaPorNusp(&bancoDeAlunos);
+            break;
+        case 2:BuscaPorCurso(&bancoDeAlunos);
+            break;
+        case 3:ListaTodosAlunos(&bancoDeAlunos);
+            break;
+        }
+
+    }while(entrada != -1);
+    
+    LiberaMemoria(&bancoDeAlunos);
 
     return 0;
 }
