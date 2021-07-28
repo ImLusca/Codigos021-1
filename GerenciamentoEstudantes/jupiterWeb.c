@@ -53,8 +53,8 @@ char *Readline(){
 
 void AlimentaBanco(JupiterWeb* bancoDeAlunos){
     Aluno *listaAlunos;
-    listaAlunos = malloc(sizeof(Aluno) * 30);
-    int contAlunos = 0,idade;    
+    int contAlunos = 0,idade, maxAlunos = 30;    
+    listaAlunos = malloc(sizeof(Aluno) * maxAlunos);
     long int nUsp;        
     do{        
         scanf("%li", &nUsp);
@@ -70,6 +70,12 @@ void AlimentaBanco(JupiterWeb* bancoDeAlunos){
         scanf("%i", &idade);
 
         listaAlunos[contAlunos].idade = idade;
+
+        if(contAlunos == maxAlunos){
+            maxAlunos +=30;
+            listaAlunos = realloc(listaAlunos, sizeof(Aluno) * maxAlunos);
+        }
+
         contAlunos++;
     }while(nUsp != -1);
 
@@ -131,6 +137,7 @@ void LiberaMemoria(JupiterWeb *bancoDeAlunos){
         free(bancoDeAlunos->listaAlunos[i].Nome);
         free(bancoDeAlunos->listaAlunos[i].Curso);
     }
+    free(bancoDeAlunos->listaAlunos);
 }
 
 int main(){
