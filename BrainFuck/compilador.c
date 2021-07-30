@@ -3,38 +3,61 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-void InicializaMemoria(char *memoria){
-    for(int i=0; i < 30000; i++){
-        memoria[i] = 0;
-    }
+void EscreveCabecalho(FILE *fp){
+    fprintf(fp, "#include<stdio.h>\n");
+    fprintf(fp, "int main(){\n");
+    fprintf(fp, "char mem[30000];int i=0;\n");
+    fprintf(fp, "for(int j=0; j< 30000;j++){ mem[j] = 0; } \n");
 }
 
-void PrintaMemoria(char *memoria){
-    printf("\n");
-    for(int i=0; i < 30000; i++){
-        if(memoria[i] != 0){
-            printf("%c", memoria[i]);
-        }
-    }
-    printf("\n");
+void EscrevePrint(FILE *fp){
+    fprintf(fp, "printf(\"\\n\");\n");
+    fprintf(fp, "for(int j =0;j < 30000; j++){ if(mem[j] != 0){ printf(\"%%i\",mem[j]); }}\n");    
+    fprintf(fp, "printf(\"\\n\");\n");
+    fprintf(fp,"return 0; }");
 }
 
 
 int main(){
-    char memoria[30000];
+    char comandoBF;
     FILE *fp;
     
-    fp = fopen("programa_C.c","a");
-    
-    //Cabeçalho
-    fprintf(fp, "#include<stdio.h>\n");
-    fprintf(fp, "int main(){\n");
-    fprintf(fp, "char memoria[3000];\n");
-    fprintf(fp, " \n");
-    fprintf(fp, "\n");
+    fp = fopen("Arquivo.c","w");
 
+    EscreveCabecalho(fp);
 
-    PrintaMemoria(memoria);
+    while( (comandoBF = getchar()) != EOF ){
+
+        switch (comandoBF){
+            case '+': fprintf(fp,"mem[i]++;\n");
+            break;
+            
+            case '-': fprintf(fp,"mem[i]--;\n");
+            break;
+
+            case '>': fprintf(fp,"i++;\n");
+            break;
+
+            case '<': fprintf(fp,"i--;\n");
+            break;
+
+            case '.': fprintf(fp,"putchar(mem[i]);\n");
+            break;
+
+            case '[': fprintf(fp,"while(mem[i]){ ");
+            break;
+
+            case ']': fprintf(fp,"}");
+            break;
+        }
+    }
+
+    EscrevePrint(fp);
+
+    fclose(fp);
+
+    system("gcc Arquivo.c -o Compilado");
+    system("./Compilado");
 
     return 0;
 }
