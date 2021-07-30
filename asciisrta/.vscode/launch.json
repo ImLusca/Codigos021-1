@@ -9,7 +9,7 @@
       "stopAtEntry": false,
       "cwd": "/home/lusca/Área de Trabalho/icc/Codigos021-1/asciisrta",
       "environment": [],
-      "program": "/home/lusca/Área de Trabalho/icc/Codigos021-1/asciisrta/build/Debug/outDebug",
+      "program": "/home/lusca/Área de Trabalho/icc/Codigos021-1/asciisrta/AsciiScotelari",
       "internalConsoleOptions": "openOnSessionStart",
       "MIMode": "gdb",
       "miDebuggerPath": "/usr/bin/gdb",

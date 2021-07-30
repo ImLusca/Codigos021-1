@@ -4,6 +4,12 @@
 #include<stdio.h>
 #include<stdlib.h>
 
+
+void preencheEspaco(char **matrizArte,char caractere,int coordX,int coordY);
+void printaMatriz(char **matrizArte,int numLinhas);
+char **leArquivoArte(int *numLinhas);
+char *Readline(FILE *fptr);
+
 int main(){
     int qtdEtapas, coordX, coordY, numLinhasMatriz;
     char **matrizArte, charPreenchimento;
@@ -14,24 +20,37 @@ int main(){
     scanf("%i",&qtdEtapas);
     for(int i =0;i< qtdEtapas;i++){
         scanf("%c %i %i",&charPreenchimento, &coordX, &coordY);
+        preencheEspaco(matrizArte,charPreenchimento,coordX,coordY);
+        printf("Arte apos a etapa %i", i);
+        printaMatriz(matrizArte,numLinhasMatriz);
+    }   
 
-    }
-
-
+    //Lembrar de liberar memória
     return 0;
 }
 
 void preencheEspaco(char **matrizArte,char caractere,int coordX,int coordY){
+
     matrizArte[coordX][coordY] = caractere;
 
-    if(matrizArte[coordX +]){
-
+    //Procura por espaços em branco nas quatro direções
+    //Ao encontrar, chama esta mesma função que preenche
+    //o espaço e repete o procedimento recursivamente
+    if(matrizArte[coordX +1][coordY] == 32){
+        preencheEspaco(matrizArte,caractere,coordX+1,coordY);
     }
-
+    if(matrizArte[coordX - 1][coordY] == 32){
+        preencheEspaco(matrizArte,caractere,coordX-1,coordY);
+    }
+    if(matrizArte[coordX][coordY + 1] == 32){
+        preencheEspaco(matrizArte,caractere,coordX,coordY + 1);
+    }
+    if(matrizArte[coordX][coordY - 1] == 32){
+        preencheEspaco(matrizArte,caractere,coordX,coordY + 1);
+    }
 }
 
-
-void printaMatriz(char **matrizArte, numLinhas){    
+void printaMatriz(char **matrizArte,int numLinhas){    
     for(int i =0;i < numLinhas; i++){
         printf("%s", matrizArte[i]);
     }    
@@ -44,34 +63,28 @@ char **leArquivoArte(int *numLinhas){
     scanf("%s",nomeArquivo);
 
     FILE *fptr = fopen(nomeArquivo,"r");
-    **matrizArte = malloc(totLinhasArte * sizeof(char *));
+    matrizArte = malloc(totLinhasArte * sizeof(char *));
     do{
         matrizArte[contLinhasArte] = Readline(fptr);
         
         if(totLinhasArte == contLinhasArte){
             totLinhasArte += 5;
-            matrizArte = realloc(matrizArte, sizeof(char*) * totLinhasArte);
+            matrizArte = realloc(matrizArte, sizeof(char *) * totLinhasArte);
         }
         contLinhasArte++;
-    }while(matrizArte[contLinhasArte] != EOF);
+    }while(matrizArte[contLinhasArte-1][0] != EOF);
     fclose(fptr);
 
-    //REalocar matriz
+    //Realocar matriz
 
-    numLinhas = contLinhasArte;
-
+    *numLinhas = contLinhasArte;
+    return matrizArte;
 }
-
 
 char *Readline(FILE *fptr){
     int tamanhoString=20, contaCaracteres=0;
     char *linha, caractere;
     linha = malloc(tamanhoString);
-
-    // while((caractere = getchar()) == '\n');
-    // if(caractere != EOF){
-    //     ungetc(caractere,stdin);
-    // }
 
     do{
         fscanf(fptr,"%c",&caractere);
