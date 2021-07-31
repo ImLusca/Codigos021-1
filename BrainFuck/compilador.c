@@ -12,7 +12,7 @@ void EscreveCabecalho(FILE *fp){
 
 void EscrevePrint(FILE *fp){
     fprintf(fp, "printf(\"\\n\");\n");
-    fprintf(fp, "for(int j =0;j < 30000; j++){ if(mem[j] != 0){ printf(\"%%i\",mem[j]); }}\n");    
+    fprintf(fp, "for(int j =0;j < 30000; j++){ if(mem[j] != 0){ printf(\"%%i \",mem[j]); }}\n");    
     fprintf(fp, "printf(\"\\n\");\n");
     fprintf(fp,"return 0; }");
 }
@@ -44,10 +44,10 @@ int main(){
             case '.': fprintf(fp,"putchar(mem[i]);\n");
             break;
 
-            case '[': fprintf(fp,"while(mem[i]){ ");
+            case '[': fprintf(fp,"while(mem[i]){ \n");
             break;
 
-            case ']': fprintf(fp,"}");
+            case ']': fprintf(fp,"}\n");
             break;
         }
     }

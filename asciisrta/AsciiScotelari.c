@@ -5,10 +5,10 @@
 #include<stdlib.h>
 
 
-void preencheEspaco(char **matrizArte,char caractere,int coordX,int coordY);
+void preencheEspaco(char **matrizArte,char caractere,int coordX,int coordY,int numLinhasMatriz);
 void printaMatriz(char **matrizArte,int numLinhas);
 char **leArquivoArte(int *numLinhas);
-char *Readline(FILE *fptr);
+char *Readline(FILE *fptr,int *fimDeArquivo);
 
 int main(){
     int qtdEtapas, coordX, coordY, numLinhasMatriz;
@@ -19,8 +19,9 @@ int main(){
     
     scanf("%i",&qtdEtapas);
     for(int i =0;i< qtdEtapas;i++){
-        scanf("%c %i %i",&charPreenchimento, &coordX, &coordY);
-        preencheEspaco(matrizArte,charPreenchimento,coordX,coordY);
+        charPreenchimento = getchar();
+        scanf("%i %i", &coordX, &coordY);
+        preencheEspaco(matrizArte,charPreenchimento,coordX,coordY, numLinhasMatriz);
         printf("Arte apos a etapa %i", i);
         printaMatriz(matrizArte,numLinhasMatriz);
     }   
@@ -29,24 +30,25 @@ int main(){
     return 0;
 }
 
-void preencheEspaco(char **matrizArte,char caractere,int coordX,int coordY){
+void preencheEspaco(char **matrizArte,char caractere,int coordX,int coordY,int  numLinhasMatriz){
 
     matrizArte[coordX][coordY] = caractere;
 
     //Procura por espaços em branco nas quatro direções
     //Ao encontrar, chama esta mesma função que preenche
     //o espaço e repete o procedimento recursivamente
-    if(matrizArte[coordX +1][coordY] == 32){
-        preencheEspaco(matrizArte,caractere,coordX+1,coordY);
+    if(coordX + 1 < numLinhasMatriz && matrizArte[coordX + 1][coordY] == 32){
+        preencheEspaco(matrizArte,caractere,coordX+1,coordY,numLinhasMatriz);
     }
-    if(matrizArte[coordX - 1][coordY] == 32){
-        preencheEspaco(matrizArte,caractere,coordX-1,coordY);
+    if(coordX - 1 >= 0 &&  matrizArte[coordX - 1][coordY] == 32){
+        preencheEspaco(matrizArte,caractere,coordX-1,coordY,numLinhasMatriz);
     }
     if(matrizArte[coordX][coordY + 1] == 32){
-        preencheEspaco(matrizArte,caractere,coordX,coordY + 1);
+        //Não precisa de verificação de segfault, pois sempre vai ter um \n no final da linha;
+        preencheEspaco(matrizArte,caractere,coordX,coordY + 1,numLinhasMatriz);
     }
-    if(matrizArte[coordX][coordY - 1] == 32){
-        preencheEspaco(matrizArte,caractere,coordX,coordY + 1);
+    if(coordY-1 >= 0 && matrizArte[coordX][coordY - 1] == 32){
+        preencheEspaco(matrizArte,caractere,coordX,coordY + 1,numLinhasMatriz);
     }
 }
 
@@ -57,7 +59,7 @@ void printaMatriz(char **matrizArte,int numLinhas){
 }
 
 char **leArquivoArte(int *numLinhas){
-    int contLinhasArte = 0, totLinhasArte = 5;
+    int contLinhasArte = 0, totLinhasArte = 200, fimDoArquivo=0;
     char **matrizArte = NULL, nomeArquivo[50]; 
 
     scanf("%s",nomeArquivo);
@@ -65,29 +67,36 @@ char **leArquivoArte(int *numLinhas){
     FILE *fptr = fopen(nomeArquivo,"r");
     matrizArte = malloc(totLinhasArte * sizeof(char *));
     do{
-        matrizArte[contLinhasArte] = Readline(fptr);
+        matrizArte[contLinhasArte] = Readline(fptr,&fimDoArquivo);
         
         if(totLinhasArte == contLinhasArte){
+            printaMatriz(matrizArte, totLinhasArte);
             totLinhasArte += 5;
-            matrizArte = realloc(matrizArte, sizeof(char *) * totLinhasArte);
+            int temp = sizeof(char*) * totLinhasArte;
+            matrizArte = realloc(matrizArte, temp);
         }
         contLinhasArte++;
-    }while(matrizArte[contLinhasArte-1][0] != EOF);
+    }while(!fimDoArquivo);
     fclose(fptr);
 
-    //Realocar matriz
+    //lembrar de realocar matriz
 
     *numLinhas = contLinhasArte;
     return matrizArte;
 }
 
-char *Readline(FILE *fptr){
+char *Readline(FILE *fptr,int *fimDeArquivo){
     int tamanhoString=20, contaCaracteres=0;
     char *linha, caractere;
     linha = malloc(tamanhoString);
 
-    do{
-        fscanf(fptr,"%c",&caractere);
+    do{        
+        caractere = fgetc(fptr);
+        if(caractere == EOF){
+            *fimDeArquivo = 1;
+            caractere = '\n';
+        }
+
 
         if(contaCaracteres == tamanhoString){
             tamanhoString += 20;
@@ -96,9 +105,9 @@ char *Readline(FILE *fptr){
 
         linha[contaCaracteres] = caractere;
         contaCaracteres++;
-    }while(caractere != EOF && caractere != '\n' );
+    }while(caractere != '\n' );
 
-    linha = realloc(linha,contaCaracteres);
+    linha = realloc(linha,contaCaracteres);   
 
     return linha;
 }
