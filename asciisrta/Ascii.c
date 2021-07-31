@@ -3,22 +3,27 @@
 
 #include<stdio.h>
 #include<stdlib.h>
-
+#include<string.h>
 
 void preencheEspaco(char **matrizArte,char caractere,int coordX,int coordY,int numLinhasMatriz);
+void enquadra_arte(char *nome_do_arquivo_da_arte,int  altura_do_quadro,int  largura_do_quadro);
 void printaMatriz(char **matrizArte,int numLinhas);
-char **leArquivoArte(int *numLinhas);
+void LiberaMemoria(char **matrizArte, int numLinhas);
+char **leArquivoArte(int *numLinhas, char nomeArquivo[]);
 char *Readline(FILE *fptr,int *fimDeArquivo);
+
 
 int main(){
     int qtdEtapas, coordX, coordY, numLinhasMatriz;
-    char **matrizArte, charPreenchimento;
+    char **matrizArte, charPreenchimento,nomeArquivo[50];
 
-    matrizArte = leArquivoArte(&numLinhasMatriz);
+    scanf("%s",nomeArquivo);
+    matrizArte = leArquivoArte(&numLinhasMatriz,nomeArquivo);
 
     printf("Arte inicial:\n");
     printaMatriz(matrizArte,numLinhasMatriz);
     
+    //pinta quadro
     scanf("%i",&qtdEtapas);
     for(int i =0;i< qtdEtapas;i++){
                 
@@ -28,11 +33,23 @@ int main(){
         scanf("%i %i", &coordX, &coordY);
         preencheEspaco(matrizArte,charPreenchimento,coordX,coordY, numLinhasMatriz);
 
-        printf("Arte apos a etapa %i:\n", i);
+        printf("\nArte apos a etapa %i:\n", i);
         printaMatriz(matrizArte,numLinhasMatriz);
     }   
 
-    //Lembrar de liberar memória
+    //Sobrescreve o arquivo
+    FILE *fptr = fopen(nomeArquivo,"w");
+    for(int i =0;i < numLinhasMatriz-1; i++){        
+        fprintf(fptr,"%s\n", matrizArte[i]);
+    }    
+    fprintf(fptr,"%s", matrizArte[numLinhasMatriz -1]);    
+    fclose(fptr);
+
+    //Printa enquadrada
+    printf("\nArte enquadrada:\n");
+    enquadra_arte(nomeArquivo,numLinhasMatriz,(int)strlen(matrizArte[0]));
+
+    LiberaMemoria(matrizArte,numLinhasMatriz);
     return 0;
 }
 
@@ -67,32 +84,31 @@ void preencheEspaco(char **matrizArte,char caractere,int coordX,int coordY,int  
 
 void printaMatriz(char **matrizArte,int numLinhas){    
     for(int i =0;i < numLinhas; i++){
-        printf("%s", matrizArte[i]);
+        printf("%s\n", matrizArte[i]);
     }    
 }
 
-char **leArquivoArte(int *numLinhas){
-    int contLinhasArte = 0, maxLinhasArte = 200, fimDoArquivo=0;
-    char **matrizArte = NULL, nomeArquivo[50]; 
-
-    scanf("%s",nomeArquivo);
+char **leArquivoArte(int *numLinhas, char nomeArquivo[]){
+    int contLinhasArte = 0, maxLinhasArte = 10, fimDoArquivo=0;
+    char **matrizArte = NULL; 
+  
 
     FILE *fptr = fopen(nomeArquivo,"r");
-    matrizArte = malloc(maxLinhasArte * sizeof(char *));
+    matrizArte = malloc(maxLinhasArte * sizeof(char*));
     do{
-        matrizArte[contLinhasArte] = Readline(fptr,&fimDoArquivo);
         
         if(maxLinhasArte == contLinhasArte){
-            printaMatriz(matrizArte, maxLinhasArte);
             maxLinhasArte += 5;
-            int temp = sizeof(char*) * maxLinhasArte;
-            matrizArte = realloc(matrizArte, temp);
+            matrizArte = realloc(matrizArte, sizeof(char*) * (maxLinhasArte + 1));
         }
+
+        matrizArte[contLinhasArte] = Readline(fptr,&fimDoArquivo);
+
         contLinhasArte++;
     }while(!fimDoArquivo);
     fclose(fptr);
-
-    //lembrar de realocar matriz
+   
+   matrizArte = realloc(matrizArte,sizeof(char *) * contLinhasArte);
 
     *numLinhas = contLinhasArte;
     return matrizArte;
@@ -106,8 +122,7 @@ char *Readline(FILE *fptr,int *fimDeArquivo){
     do{        
         caractere = fgetc(fptr);
         if(caractere == EOF){
-            *fimDeArquivo = 1;
-            caractere = '\n';
+            *fimDeArquivo = 1;            
         }
 
         if(contaCaracteres == tamanhoString){
@@ -117,7 +132,9 @@ char *Readline(FILE *fptr,int *fimDeArquivo){
 
         linha[contaCaracteres] = caractere;
         contaCaracteres++;
-    }while(caractere != '\n' );
+    }while(caractere != '\n' && caractere != EOF);
+
+    linha[contaCaracteres-1] = '\0';
 
     linha = realloc(linha,contaCaracteres);   
 
@@ -130,7 +147,6 @@ void LiberaMemoria(char **matrizArte, int numLinhas){
     }  
     free(matrizArte);
 }
-
 
 void enquadra_arte(
 	char *nome_do_arquivo_da_arte,

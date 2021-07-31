@@ -5,7 +5,7 @@
       "name": "C/C++ Runner: Debug Session",
       "type": "cppdbg",
       "request": "launch",
-      "args": ["<","Teste/12.in"],
+      "args": ["<","Teste/15.in"],
       "stopAtEntry": false,
       "cwd": "/home/lusca/Área de Trabalho/icc/Codigos021-1/asciisrta",
       "environment": [],
