@@ -1,5 +1,5 @@
 # A brief description about my 2021 first semester C codes 
-## Introduction to computer science I programs:
+## Introduction to computer science I codes:
 1-  temperatura: A temperature converter from Fahrenheit to Celsius.<br>
 2-  multa      : A speed traffic fine calculator.<br>
 3-  badutss    : A program to solve this problem shorturl.at/nsBZ2.<br>
@@ -15,20 +15,20 @@
 13- REDRUM     : A Palindrome detector.<br>
 14- asciirtista: Basicaly the paint color fill bucket tool.<br>
 
-## Laboratory of Introduction to computer science I programs:
-1-  sobits      : Extract 4 char from an integer.
-2-  pow         : calculates number a power number b.
-3-  bit_bit     : print of bit operations.
-4-  sizeof      : print the size of each kind of variable.
-5-  hello world : A simple hello word.
-6-  hitbox      : Calculate if two bodys hit or miss and which is the intersection area if them hit.
-7-  calendario  : A simple Calendar.
-8-  coords      : simulate a 2d position after some key presses(W A S D).
-9-  pg          : A geometrical progression calculator.
-10- jogoVelha   : A tic tac toe state verifier.
-11- contandoPalavras: A word counter.
-12- deteccaoSpan: A simple email spam detector.
-13- enigma      : A Enigma messages decriptor.
-14- Histograma  : A histogram generator.
-15- MaiorMenorMediaModa : calculates the lower, bigger, average and mode from some integer array.
+## Laboratory of Introduction to computer science I codes:
+1-  sobits      : Extract 4 char from an integer.<br>
+2-  pow         : calculates number a power number b.<br>
+3-  bit_bit     : print of bit operations.<br>
+4-  sizeof      : print the size of each kind of variable.<br>
+5-  hello world : A simple hello word.<br>
+6-  hitbox      : Calculate if two bodys hit or miss and which is the intersection area if them hit.<br>
+7-  calendario  : A simple Calendar.<br>
+8-  coords      : simulate a 2d position after some key presses(W A S D).<br>
+9-  pg          : A geometrical progression calculator.<br>
+10- jogoVelha   : A tic tac toe state verifier.<br>
+11- contandoPalavras: A word counter.<br>
+12- deteccaoSpan: A simple email spam detector.<br>
+13- enigma      : A Enigma messages decriptor.<br>
+14- Histograma  : A histogram generator.<br>
+15- MaiorMenorMediaModa : calculates the lower, bigger, average and mode from some integer array.<br>
 16- 
