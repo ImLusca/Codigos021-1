@@ -13,7 +13,7 @@
 11- caos       : A John Horton Conway Game of life simulator.<br>
 12- GerPlaylist: A music and playlist manager able to save and load playlists.<br>
 13- REDRUM     : A Palindrome detector.<br>
-14- asciirtista: Basicaly the paint fill bucket tool.<br>
+14- asciirtista: Basicaly the paint color fill bucket tool.<br>
 
 ## Laboratory of Introduction to computer science I programs:
 
