@@ -30,5 +30,14 @@
 12- deteccaoSpan: A simple email spam detector.<br>
 13- enigma      : A Enigma messages decriptor.<br>
 14- Histograma  : A histogram generator.<br>
-15- MaiorMenorMediaModa : calculates the lower, bigger, average and mode from some integer array.<br>
-16- 
+15- MaiorMenorMediaModa : calculates the lower, bigger, average and mode of an integer array.<br>
+16- horariosinterplanetarios: Calculates the time equivalency in another planets.<br>
+17- Troco        : A change calculator.<br>
+18- SimuladorPart: A particle simulator.<br>
+19- PolonesaReversa : A polish reverse notation calculator.<br>
+20- padding      : Adds a padding to a matrix.<br>
+21- tabu         : Removes a taboo word from the string.<br>
+22- Brainfuck    : A JIT Brainfuck compiler.<br>
+23- GerenciamentoEstudantes: A student management program.<br>
+24- Pokedex      : A Pokedex similar of the pokemon's games.<br>
+25- Lisp         : A LISP Calculator
